@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+:root {
+  --bg-obsidian: #0a0c10;
+  --surface-charcoal: #12161f;
+  --surface-elevated: #181d28;
+  --gold: #d4af70;
+  --gold-bright: #e5c58e;
+  --ink-primary: #f5f2eb;
+  --ink-muted: #a6a095;
+  --line-subtle: rgba(255, 255, 255, 0.1);
+  --line-gold: rgba(212, 175, 112, 0.34);
+  --on-gold: #0d0b07;
+  --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-zoom: cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-obsidian);
+    color: var(--ink-primary);
+    font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background-color: var(--bg-obsidian);
+    color: var(--ink-primary);
+    overflow-x: hidden;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--gold);
+    color: var(--on-gold);
+  }
+}
+
+.font-ruqaa {
+  font-family: 'Aref Ruqaa', serif;
+  line-height: 1.42;
+}
+
+.font-body {
+  font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+}
+
+/* Interactive Anatomy Stage Media Transitions */
+.anatomy-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--line-gold);
+  background-color: #07090c;
+  isolation: isolate;
+}
+
+.anatomy-exterior-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--focus-x, 50%) var(--focus-y, 50%);
+  transition: transform 1.25s var(--ease-zoom), opacity 0.45s ease;
+  will-change: transform, opacity;
+}
+
+.anatomy-stage-entering .anatomy-exterior-layer,
+.anatomy-stage-detail .anatomy-exterior-layer {
+  transform: scale(1.42);
+}
+
+.anatomy-xray-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.55s var(--ease-luxury);
+  pointer-events: none;
+}
+
+.anatomy-xray-layer.visible {
+  opacity: 1;
+}
+
+.anatomy-detail-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-color: #090b0f;
+  transition: opacity 0.7s var(--ease-luxury);
+  pointer-events: none;
+}
+
+.anatomy-detail-layer.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.anatomy-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 1.2s var(--ease-luxury);
+}
+
+.anatomy-detail-layer.visible .anatomy-detail-image {
+  transform: scale(1);
+}
+
+/* Hotspot buttons anchored in image-plane coordinates */
+.anatomy-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  border-radius: 9999px;
+}
+
+.anatomy-hotspot-core {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background-color: var(--gold);
+  color: var(--on-gold);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 5px rgba(212, 175, 112, 0.18), 0 4px 14px rgba(0, 0, 0, 0.55);
+  transition: transform 0.2s var(--ease-luxury), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.anatomy-hotspot:hover .anatomy-hotspot-core,
+.anatomy-hotspot:focus-visible .anatomy-hotspot-core,
+.anatomy-hotspot.is-hovered .anatomy-hotspot-core {
+  transform: scale(1.12);
+  background-color: var(--gold-bright);
+  box-shadow: 0 0 0 8px rgba(212, 175, 112, 0.24), 0 6px 20px rgba(0, 0, 0, 0.65);
+}
+
+.anatomy-hotspot-tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  background-color: #12161f;
+  color: var(--ink-primary);
+  border: 1px solid var(--line-gold);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+  transition: opacity 0.18s ease, transform 0.2s var(--ease-luxury);
+}
+
+.anatomy-hotspot:hover .anatomy-hotspot-tooltip,
+.anatomy-hotspot:focus-visible .anatomy-hotspot-tooltip,
+.anatomy-hotspot.is-hovered .anatomy-hotspot-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Numbered cutaway pin */
+.cutaway-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.cutaway-pin-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  background-color: rgba(18, 22, 31, 0.9);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold);
+  font-size: 12px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s var(--ease-luxury), background-color 0.2s ease, color 0.2s ease;
+}
+
+.cutaway-pin.is-open .cutaway-pin-badge,
+.cutaway-pin:hover .cutaway-pin-badge {
+  background-color: var(--gold);
+  color: var(--on-gold);
+  transform: scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .anatomy-exterior-layer,
+  .anatomy-xray-layer,
+  .anatomy-detail-layer,
+  .anatomy-detail-image,
+  .anatomy-hotspot-core,
+  .anatomy-hotspot-tooltip,
+  .cutaway-pin-badge {
+    transition-duration: 0.01ms !important;
+  }
+  .anatomy-stage-entering .anatomy-exterior-layer,
+  .anatomy-stage-detail .anatomy-exterior-layer {
+    transform: none !important;
+  }
+}

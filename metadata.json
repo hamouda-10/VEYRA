@@ -1,0 +1,6 @@
+{
+  "name": "VEYRA — Electric, inside out.",
+  "description": "VEYRA. Explore an electric vehicle from the inside out. An independent, fictional automotive concept.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
